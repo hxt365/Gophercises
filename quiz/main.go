@@ -4,6 +4,7 @@ import (
 	"encoding/csv"
 	"flag"
 	"fmt"
+	"math/rand"
 	"os"
 	"strings"
 	"time"
@@ -17,9 +18,11 @@ var (
 func main() {
 	csvFilename := flag.String("csv", "problem.csv", "A csv file that contains problems and answers")
 	timeLimit := flag.Int("limit", 3, "Time limit for each problem")
+	shuffle := flag.Bool("shuffle", true, "Shuffle the quiz order each time it is run")
+
 	flag.Parse()
 
-	lines := readFile(*csvFilename)
+	lines := readFile(*csvFilename, *shuffle)
 	problems := parseLines(lines)
 
 	timer := time.NewTimer(time.Duration(*timeLimit) * time.Second)
@@ -67,7 +70,7 @@ func parseLines(lines [][]string) []problem {
 	return problems
 }
 
-func readFile(filename string) [][]string {
+func readFile(filename string, shuffle bool) [][]string {
 	file, err := os.Open(filename)
 	if err != nil {
 		exit(fmt.Sprintf("Cannot open the CSV file at %s\n", filename))
@@ -77,6 +80,11 @@ func readFile(filename string) [][]string {
 	lines, err := r.ReadAll()
 	if err != nil {
 		exit(fmt.Sprintf("Failed to parse the CSV file\n"))
+	}
+
+	if shuffle {
+		rand.Seed(time.Now().UnixNano())
+		rand.Shuffle(len(lines), func(i, j int) { lines[i], lines[j] = lines[j], lines[i] })
 	}
 
 	return lines
