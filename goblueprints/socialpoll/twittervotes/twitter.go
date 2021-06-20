@@ -116,8 +116,8 @@ func readFromTwitter(votes chan<- string) {
 		log.Println("making request failed:", err)
 		return
 	}
-	decoder := json.NewDecoder(resp.Body)
-	//defer resp.Body.Close()
+	reader = resp.Body
+	decoder := json.NewDecoder(reader)
 	for {
 		var t tweet
 		if err := decoder.Decode(&t); err != nil {

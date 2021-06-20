@@ -1,7 +1,7 @@
 package main
 
 import (
-	"Gophercises/goweb/cmd/thesaurus"
+	"Gophercises/goblueprints/cmd/thesaurus"
 	"bufio"
 	"fmt"
 	"log"

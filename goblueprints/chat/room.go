@@ -1,7 +1,7 @@
 package main
 
 import (
-	"Gophercises/goweb/trace"
+	"Gophercises/goblueprints/trace"
 	"github.com/gorilla/websocket"
 	"github.com/stretchr/objx"
 	"log"
